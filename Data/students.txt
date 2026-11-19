@@ -1,0 +1,8 @@
+1,Ahmed Ali,20,3.7
+2,Mohamed Hassan,21,3.2
+3,Sara Mahmoud,19,3.9
+4,Omar Khaled,22,2.4
+5,Nour Ibrahim,20,1.8
+6,Mona Samir,23,2.9
+7,Youssef Adel,21,3.5
+8,Hana Tarek,19,2.1
