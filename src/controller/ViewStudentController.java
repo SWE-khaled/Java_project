@@ -7,18 +7,23 @@ public class ViewStudentController {
     private final StudentContext context;
 
     public ViewStudentController(StudentContext context) {
+
         this.context = context;
+
         setupViewButton();
     }
 
     private void setupViewButton() {
+
         context.getView()
                 .getViewButton()
                 .setOnAction(event -> viewSelectedStudent());
     }
 
     private void viewSelectedStudent() {
-        Student student = context.getSelectedStudent();
+
+        Student student =
+                context.getSelectedStudent();
 
         if (student == null) {
             return;

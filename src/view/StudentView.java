@@ -16,6 +16,7 @@ import model.Student;
 
 import java.util.List;
 
+
 public class StudentView {
 
     private final BorderPane root;

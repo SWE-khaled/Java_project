@@ -5,26 +5,32 @@ public class SearchController {
     private final StudentContext context;
 
     public SearchController(StudentContext context) {
+
         this.context = context;
+
         setupSearch();
     }
 
     private void setupSearch() {
+
         context.getView()
                 .getSearchField()
                 .textProperty()
-                .addListener((observable, oldValue, newValue) -> applySearch(newValue));
+                .addListener(
+                        (observable, oldValue, newValue) -> {
 
-        context.getView()
-                .getSearchButton()
-                .setOnAction(event -> applySearch(context.getView().getSearchField().getText()));
-    }
+                            String search =
+                                    newValue
+                                            .toLowerCase()
+                                            .trim();
 
-    private void applySearch(String text) {
-        String search = text == null ? "" : text.toLowerCase().trim();
-
-        context.getFilteredStudents().setPredicate(student ->
-                student.getName().toLowerCase().startsWith(search)
-        );
+                            context.getFilteredStudents().setPredicate(
+                                    student ->
+                                            student.getName()
+                                                    .toLowerCase()
+                                                    .startsWith(search)
+                            );
+                        }
+                );
     }
 }
