@@ -28,19 +28,22 @@ public class AddStudentController {
     }
 
     private void saveNewStudent(AddStudentView addView) {
-        Student student = StudentValidator.build(
-                context.nextId(),
+        Student validationResult = StudentValidator.build(
+                0,
                 addView.getNameField().getText().trim(),
                 addView.getAgeField().getText().trim(),
                 addView.getGpaField().getText().trim()
         );
 
-        if (student == null) {
+        if (validationResult == null) {
             return;
         }
 
-        context.getService().addStudent(student);
-        context.getService().saveLastId(student.getId());
+        Student student = context.getService().addNewStudent(
+                validationResult.getName(),
+                validationResult.getAge(),
+                validationResult.getGpa()
+        );
         context.getAllStudents().add(student);
         context.clearSearch();
         context.updateStatistics();
