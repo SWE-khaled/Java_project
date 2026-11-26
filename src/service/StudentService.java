@@ -53,7 +53,7 @@ public class StudentService {
         }
     }
 
-    public List<Student> loadStudents() {
+    public synchronized List<Student> loadStudents() {
         List<Student> students = new ArrayList<>();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
@@ -83,7 +83,7 @@ public class StudentService {
         return students;
     }
 
-    public int getNextId() {
+    public synchronized int getNextId() {
         int max = 0;
 
         for (Student student : loadStudents()) {
@@ -102,7 +102,7 @@ public class StudentService {
         return max + 1;
     }
 
-    public void saveLastId(int id) {
+    public synchronized void saveLastId(int id) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(lastIdPath))) {
             writer.write(String.valueOf(id));
         } catch (IOException e) {
@@ -110,7 +110,7 @@ public class StudentService {
         }
     }
 
-    public void addStudent(Student student) {
+    public synchronized void addStudent(Student student) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
             writer.write(toLine(student));
             writer.newLine();
@@ -119,7 +119,14 @@ public class StudentService {
         }
     }
 
-    public void updateStudent(Student updatedStudent) {
+    public synchronized Student addNewStudent(String name, int age, double gpa) {
+        Student student = new Student(getNextId(), name, age, gpa);
+        addStudent(student);
+        saveLastId(student.getId());
+        return student;
+    }
+
+    public synchronized void updateStudent(Student updatedStudent) {
         List<Student> students = loadStudents();
 
         for (int i = 0; i < students.size(); i++) {
@@ -132,7 +139,7 @@ public class StudentService {
         saveStudents(students);
     }
 
-    public void deleteStudent(int id) {
+    public synchronized void deleteStudent(int id) {
         List<Student> students = loadStudents();
         students.removeIf(student -> student.getId() == id);
         saveStudents(students);
